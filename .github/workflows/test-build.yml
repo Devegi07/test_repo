@@ -35,20 +35,12 @@ jobs:
         run: |
           echo "Environment: ${{ github.event.inputs.environment }}"
           echo "Build Type: ${{ github.event.inputs.build_type }}"
-          echo "Run Tests: ${{ github.event.inputs.run_tests }}"
 
       - name: Simulate Build
         run: |
           echo "Starting build..."
           sleep 10
           echo "Build completed!"
-
-      - name: Run Tests
-        if: ${{ github.event.inputs.run_tests == 'yes' }}
-        run: |
-          echo "Running tests..."
-          sleep 5
-          echo "Tests completed!"
 
       - name: Deploy Step
         if: ${{ github.event.inputs.environment == 'prod' }}
