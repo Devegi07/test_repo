@@ -1,0 +1,66 @@
+name: Test Build Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+
+      build_type:
+        description: "Build type"
+        required: true
+        default: "quick"
+        type: choice
+        options:
+          - quick
+          - full
+
+      run_tests:
+        description: "Run tests?"
+        required: true
+        default: "yes"
+        type: choice
+        options:
+          - yes
+          - no
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Print Inputs
+        run: |
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Build Type: ${{ github.event.inputs.build_type }}"
+          echo "Run Tests: ${{ github.event.inputs.run_tests }}"
+
+      - name: Simulate Build
+        run: |
+          echo "Starting build..."
+          sleep 10
+          echo "Build completed!"
+
+      - name: Run Tests
+        if: ${{ github.event.inputs.run_tests == 'yes' }}
+        run: |
+          echo "Running tests..."
+          sleep 5
+          echo "Tests completed!"
+
+      - name: Deploy Step
+        if: ${{ github.event.inputs.environment == 'prod' }}
+        run: |
+          echo "Deploying to production..."
+          sleep 5
+          echo "Deployment done!"
